@@ -101,11 +101,11 @@
   --bs-border-style: solid;
   --bs-border-color: #dee2e6;
   --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
-  --bs-border-radius: 0.375rem;
-  --bs-border-radius-sm: 0.25rem;
-  --bs-border-radius-lg: 0.5rem;
-  --bs-border-radius-xl: 1rem;
-  --bs-border-radius-xxl: 2rem;
+  --bs-border-radius: 0.25rem;
+  --bs-border-radius-sm: 0.125rem;
+  --bs-border-radius-lg: 0.375rem;
+  --bs-border-radius-xl: 0.75rem;
+  --bs-border-radius-xxl: 1.5rem;
   --bs-border-radius-2xl: var(--bs-border-radius-xxl);
   --bs-border-radius-pill: 50rem;
   --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
@@ -283,11 +283,11 @@
   --bs-border-style: solid;
   --bs-border-color: #dee2e6;
   --bs-border-color-translucent: rgba(0, 0, 0, 0.175);
-  --bs-border-radius: 0.375rem;
-  --bs-border-radius-sm: 0.25rem;
-  --bs-border-radius-lg: 0.5rem;
-  --bs-border-radius-xl: 1rem;
-  --bs-border-radius-xxl: 2rem;
+  --bs-border-radius: 0.25rem;
+  --bs-border-radius-sm: 0.125rem;
+  --bs-border-radius-lg: 0.375rem;
+  --bs-border-radius-xl: 0.75rem;
+  --bs-border-radius-xxl: 1.5rem;
   --bs-border-radius-2xl: var(--bs-border-radius-xxl);
   --bs-border-radius-pill: 50rem;
   --bs-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
@@ -572,7 +572,7 @@ kbd {
   font-size: 0.875em;
   color: var(--bs-body-bg);
   background-color: var(--bs-body-color);
-  border-radius: 0.25rem;
+  border-radius: 0.125rem;
 }
 kbd kbd {
   padding: 0;
@@ -5461,7 +5461,7 @@ textarea.form-control-lg {
   color: var(--bs-btn-close-color);
   background: transparent var(--bs-btn-close-bg) center/1em auto no-repeat;
   border: 0;
-  border-radius: 0.375rem;
+  border-radius: 0.25rem;
   opacity: var(--bs-btn-close-opacity);
 }
 .btn-close:hover {
@@ -16803,6 +16803,77 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+html {
+  background: linear-gradient(150deg, #002e5c 0%, #004d99 50%, #001f3d 100%);
+  background-attachment: fixed;
+}
+
+body {
+  background: none;
+}
+body > main {
+  margin: 1.5rem 0;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  background-color: #00264d;
+  border: 1px solid #001f3d;
+}
+body > header {
+  margin: 1.5rem 0;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  background-color: #00264d;
+  border: 1px solid #001f3d;
+  display: flex;
+  justify-content: space-between;
+}
+body > header h1 a, body > header .h1 a {
+  display: block;
+  font-size: 0;
+  height: 38px;
+  width: 200px;
+  background: url(/img/rockaway-logotype.svg) left center no-repeat;
+  background-size: cover;
+}
+body > header nav a {
+  background: #39f;
+  display: inline-block;
+  padding: 4px 16px;
+  color: #212529;
+  font-size: 120%;
+  border-radius: 0.25rem;
+  text-decoration: none;
+}
+body > header nav a:hover {
+  color: #212529;
+  background: #004d99;
+}
+body > footer {
+  margin: 1.5rem 0;
+  border-radius: 0.5rem;
+  padding: 0.625rem;
+  background-color: #00264d;
+  border: 1px solid #001f3d;
+  font-size: 80%;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+}
+body > footer a#admin-login {
+  margin-left: 0.5em;
+}
+body > footer a {
+  display: inline-block;
+  border-left: 1px solid #fff;
+  padding: 0 0.5em;
+  text-decoration: none;
+}
+body > footer nav a:first-child {
+  border: none;
+}
+body > footer a:hover {
+  text-decoration: underline;
 }
 
 /*# sourceMappingURL=frontend.css.map */

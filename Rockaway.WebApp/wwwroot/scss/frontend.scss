@@ -34,6 +34,15 @@ $border-radius-xxl: 6 * $border-radius;
 @import "../lib/bootstrap/scss/utilities/api";
 
 // 8. Add additional custom code here
+@import '../lib/fontawesome/scss/fontawesome.scss';
+@import '../lib/fontawesome/scss/solid.scss';
+@import '../lib/fontawesome/scss/brands.scss';
+
+@mixin smartphone {
+	@media (max-width: 480px) {
+		@content;
+	}
+}
 
 @mixin fancy-panel($panel-color: color.scale($primary, $lightness: -75%)) {
 	margin: $grid-gutter-width 0;
@@ -41,6 +50,12 @@ $border-radius-xxl: 6 * $border-radius;
 	padding: calc($grid-gutter-width/4) + $border-radius;
 	background-color: $panel-color;
 	border: 1px solid color.scale($panel-color, $lightness: -20%);
+
+	@include smartphone {
+		border: 0;
+		border-radius: 0;
+		margin: 0 0 calc($grid-gutter-width/2) 0;
+	}
 }
 
 html {
@@ -50,6 +65,11 @@ html {
 
 body {
 	background: none;
+
+	@include smartphone {
+		padding: 0 !important;
+		font-size: max(1em, 20px);
+	}
 
 	> main {
 		@include fancy-panel;
@@ -71,6 +91,29 @@ body {
 			}
 		}
 
+		label#nav-toggle {
+			display: none;
+
+			@include smartphone {
+				font-size: 200%;
+				display: block;
+				position: absolute;
+				z-index: 2;
+				top: calc($grid-gutter-width/4);
+				right: calc($grid-gutter-width/2);
+			}
+		}
+
+		input#nav-checkbox {
+			height: 0;
+
+			@include smartphone {
+				&:checked ~ nav {
+					height: 300px;
+				}
+			}
+		}
+
 		nav {
 			a {
 				background: $primary;
@@ -84,6 +127,25 @@ body {
 				&:hover {
 					color: $body-color;
 					background: color.scale($primary, $lightness: -50%);
+				}
+			}
+
+			@include smartphone {
+				position: absolute;
+				overflow-y: hidden;
+				display: block;
+				top: 0;
+				left: 0;
+				right: 0;
+				height: 0;
+				transition: height 0.2s ease;
+
+				a {
+					display: block;
+					width: 100%;
+					padding: 16px;
+					border-radius: 0;
+					border-bottom: 1px solid $body-color-dark;
 				}
 			}
 		}
@@ -115,6 +177,22 @@ body {
 
 		a:hover {
 			text-decoration: underline;
+		}
+
+		@include smartphone {
+			margin-bottom: 0;
+
+			span,
+			nav {
+				width: 100%;
+				text-align: center;
+				display: block;
+			}
+
+			nav a {
+				display: block;
+				border: 0;
+			}
 		}
 	}
 }

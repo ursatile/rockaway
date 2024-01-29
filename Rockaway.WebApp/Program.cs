@@ -44,6 +44,11 @@ using (var scope = app.Services.CreateScope()) {
 	// ReSharper disable once InvokeAsExtensionMethod
 	if (HostEnvironmentExtensions.UseSqlite(app.Environment)) {
 		db.Database.EnsureCreated();
+	} else if (Boolean.TryParse(app.Configuration["apply-migrations"], out var applyMigrations) && applyMigrations) {
+		logger.LogInformation("apply-migrations=true was specified. Applying EF migrations:");
+		db.Database.Migrate();
+		logger.LogInformation("EF database migrations applied successfully.");
+		Environment.Exit(0);
 	}
 }
 

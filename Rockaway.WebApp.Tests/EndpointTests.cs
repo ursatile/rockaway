@@ -9,7 +9,7 @@ namespace Rockaway.WebApp.Tests {
 
 		[Fact]
 		public async Task Status_Endpoint_Works() {
-			await using var factory = new WebApplicationFactory<Program>();
+			var factory = new WebApplicationFactory<Program>();
 			var client = factory.CreateClient();
 			var result = await client.GetAsync("/status");
 			result.EnsureSuccessStatusCode();
@@ -30,11 +30,11 @@ namespace Rockaway.WebApp.Tests {
 
 		[Fact]
 		public async Task Status_Endpoint_Returns_Status() {
-			await using var factory = new WebApplicationFactory<Program>()
+			var factory = new WebApplicationFactory<Program>()
 				.WithWebHostBuilder(builder => builder.ConfigureServices(services => {
 					services.AddSingleton<IStatusReporter>(new TestStatusReporter());
 				}));
-			using var client = factory.CreateClient();
+			var client = factory.CreateClient();
 			var json = await client.GetStringAsync("/status");
 			var status = JsonSerializer.Deserialize<ServerStatus>(json, jsonSerializerOptions);
 			status.ShouldNotBeNull();

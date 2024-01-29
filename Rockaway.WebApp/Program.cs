@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-
+builder.Services.AddControllersWithViews();
 builder.Services.AddSingleton<IStatusReporter>(new StatusReporter());
 
 var sqliteConnection = new SqliteConnection("Data Source=:memory:");
@@ -38,4 +38,5 @@ app.UseAuthorization();
 
 app.MapRazorPages();
 app.MapGet("/status", (IStatusReporter reporter) => reporter.GetStatus());
+app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 app.Run();

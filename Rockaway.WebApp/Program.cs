@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Hosting.Server.Features;
-using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
+using Mjml.Net;
+using RazorEngineCore;
 using Rockaway.WebApp.Data;
 using Rockaway.WebApp.Hosting;
 using Rockaway.WebApp.Services;
+using Rockaway.WebApp.Services.Mail;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -14,6 +15,15 @@ builder.Services.AddControllersWithViews(options => {
 });
 builder.Services.AddSingleton<IStatusReporter>(new StatusReporter());
 builder.Services.AddSingleton<IClock>(SystemClock.Instance);
+
+#if DEBUG
+builder.Services.AddSingleton<IMailTemplateProvider>(new DebugMailTemplateProvider());
+#else
+builder.Services.AddSingleton<IMailTemplateProvider>(new ResourceMailTemplateProvider());
+#endif
+builder.Services.AddSingleton<IMailBodyRenderer, MailBodyRenderer>();
+builder.Services.AddSingleton<IRazorEngine, RazorEngine>();
+builder.Services.AddSingleton<IMjmlRenderer, MjmlRenderer>();
 
 #if DEBUG && !NCRUNCH
 builder.Services.AddSassCompiler();

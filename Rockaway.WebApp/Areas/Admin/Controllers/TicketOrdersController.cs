@@ -1,11 +1,15 @@
 using Rockaway.WebApp.Data;
 using Rockaway.WebApp.Data.Entities;
+using Rockaway.WebApp.Models;
+using Rockaway.WebApp.Services;
+using Rockaway.WebApp.Services.Mail;
 
 namespace Rockaway.WebApp.Areas.Admin.Controllers;
 
 [Area("admin")]
-public class TicketOrdersController(RockawayDbContext context) : Controller {
-	// GET: TicketOrders
+public class TicketOrdersController(RockawayDbContext context,
+	IMailBodyRenderer mailRenderer) : Controller {
+
 	public async Task<IActionResult> Index()
 		=> View(await context.TicketOrders.ToListAsync());
 
@@ -79,6 +83,26 @@ public class TicketOrdersController(RockawayDbContext context) : Controller {
 		if (ticketOrder != null) context.TicketOrders.Remove(ticketOrder);
 		await context.SaveChangesAsync();
 		return RedirectToAction(nameof(Index));
+	}
+
+	public async Task<IActionResult> Mail(Guid id, string format = "html") {
+		var ticketOrder = await context.TicketOrders
+			.Include(o => o.Contents).ThenInclude(item => item.TicketType)
+			.Include(o => o.Show).ThenInclude(s => s.HeadlineArtist)
+			.Include(o => o.Show).ThenInclude(s => s.Venue)
+			.Include(o => o.Show).ThenInclude(s => s.SupportSlots).ThenInclude(ss => ss.Artist)
+			.FirstOrDefaultAsync(m => m.Id == id);
+		if (ticketOrder == default) return NotFound();
+		// ReSharper disable once InvokeAsExtensionMethod
+		var data = new TicketOrderMailData(ticketOrder, UriExtensions.GetWebsiteBaseUri(Request));
+		switch (format) {
+			case "html":
+				var html = mailRenderer.RenderOrderConfirmationHtml(data);
+				return Content(html, "text/html");
+			default:
+				var text = mailRenderer.RenderOrderConfirmationText(data);
+				return Content(text, "text/plain", Encoding.UTF8);
+		}
 	}
 
 	private bool TicketOrderExists(Guid id) {

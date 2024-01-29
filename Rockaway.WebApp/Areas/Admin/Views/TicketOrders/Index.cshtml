@@ -24,6 +24,7 @@
 			<th>
 				@Html.DisplayNameFor(model => model.CompletedAt)
 			</th>
+			<th>Emails</th>
 			<th></th>
 		</tr>
 	</thead>
@@ -41,6 +42,10 @@
 				</td>
 				<td>
 					@Html.DisplayFor(modelItem => item.CompletedAt)
+				</td>
+				<td>
+					<a asp-action="Mail" asp-route-id="@item.Id" asp-route-format="html">Html</a> |
+					<a asp-action="Mail" asp-route-id="@item.Id" asp-route-format="text">Text</a>
 				</td>
 				<td>
 					<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

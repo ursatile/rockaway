@@ -23,6 +23,7 @@ public class PageTests {
 	[Theory]
 	[InlineData("/", "Rockaway")]
 	[InlineData("/privacy", "Privacy Policy")]
+	[InlineData("/contact", "Contact Us")]
 	public async Task Page_Has_Correct_Title(string url, string title) {
 		var browsingContext = BrowsingContext.New(Configuration.Default);
 		await using var factory = new WebApplicationFactory<Program>();

@@ -49,7 +49,8 @@ public class ArtistsController(RockawayDbContext context) : Controller {
 		try {
 			context.Update(artist);
 			await context.SaveChangesAsync();
-		} catch (DbUpdateConcurrencyException) {
+		}
+		catch (DbUpdateConcurrencyException) {
 			if (!ArtistExists(artist.Id)) return NotFound();
 			throw;
 		}

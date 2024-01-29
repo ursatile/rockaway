@@ -1,10 +1,10 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Rockaway.WebApp.Data;
 using Rockaway.WebApp.Hosting;
 using Rockaway.WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
@@ -26,6 +26,8 @@ if (HostEnvironmentExtensions.UseSqlite(builder.Environment)) {
 	var connectionString = builder.Configuration.GetConnectionString("AZURE_SQL_CONNECTIONSTRING");
 	builder.Services.AddDbContext<RockawayDbContext>(options => options.UseSqlServer(connectionString));
 }
+
+builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RockawayDbContext>();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 var app = builder.Build();

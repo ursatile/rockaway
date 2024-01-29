@@ -6,6 +6,7 @@ using Rockaway.WebApp.Data;
 using Rockaway.WebApp.Hosting;
 using Rockaway.WebApp.Services;
 using Rockaway.WebApp.Services.Mail;
+using Rockaway.WebApp.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -55,6 +56,11 @@ if (HostEnvironmentExtensions.UseSqlite(builder.Environment)) {
 builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<RockawayDbContext>();
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
+
+builder.Services.AddRazorComponents()
+	.AddInteractiveServerComponents();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -94,6 +100,9 @@ app.MapAreaControllerRoute(
 ).RequireAuthorization();
 app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 app.MapControllers();
+app.MapRazorComponents<App>()
+	.AddInteractiveServerRenderMode();
+
 app.Run();
 
 ILogger<T> CreateAdHocLogger<T>() => LoggerFactory.Create(lb => lb.AddConsole()).CreateLogger<T>();

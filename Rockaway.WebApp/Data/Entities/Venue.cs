@@ -59,6 +59,14 @@ public class Venue {
 		return show;
 	}
 
+	public CultureInfo Culture
+		=> CultureInfo.GetCultures(CultureTypes.SpecificCultures)
+			   .FirstOrDefault(ci => ci.Name == CultureName)
+		   ??
+		   CultureInfo.InvariantCulture;
+
+	public string FormatPrice(decimal price) => price.ToString("C", Culture);
+
 	private IEnumerable<string?> AddressTokens => [Address, City, PostalCode];
 	public string FullAddress => String.Join(", ", AddressTokens.Where(s => !String.IsNullOrWhiteSpace(s)));
 }

@@ -253,3 +253,11 @@ div.artist-card {
 		}
 	}
 }
+
+form > .row {
+	margin-bottom: calc($container-padding-x / 4);
+}
+
+hr {
+	opacity: 1;
+}

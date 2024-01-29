@@ -72,6 +72,7 @@ app.MapAreaControllerRoute(
 	pattern: "Admin/{controller=Home}/{action=Index}/{id?}"
 ).RequireAuthorization();
 app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
+app.MapControllers();
 app.Run();
 
 ILogger<T> CreateAdHocLogger<T>() => LoggerFactory.Create(lb => lb.AddConsole()).CreateLogger<T>();

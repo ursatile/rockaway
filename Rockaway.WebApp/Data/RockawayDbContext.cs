@@ -13,6 +13,7 @@ public class RockawayDbContext(DbContextOptions<RockawayDbContext> options)
 	public DbSet<Artist> Artists { get; set; } = default!;
 	public DbSet<Venue> Venues { get; set; } = default!;
 	public DbSet<Show> Shows { get; set; } = default!;
+	public DbSet<TicketOrder> TicketOrders { get; set; } = default!;
 
 	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
 		base.ConfigureConventions(configurationBuilder);
@@ -49,6 +50,8 @@ public class RockawayDbContext(DbContextOptions<RockawayDbContext> options)
 				.WithOne(ss => ss.Show).OnDelete(DeleteBehavior.Cascade);
 			entity.HasMany(show => show.TicketTypes)
 				.WithOne(tt => tt.Show).OnDelete(DeleteBehavior.Cascade);
+			entity.HasMany(show => show.TicketOrders)
+				.WithOne(to => to.Show).OnDelete(DeleteBehavior.Restrict);
 		});
 
 		modelBuilder.Entity<SupportSlot>(entity => {
@@ -57,6 +60,14 @@ public class RockawayDbContext(DbContextOptions<RockawayDbContext> options)
 				slot => slot.Show.Venue.Id,
 				slot => slot.Show.Date,
 				slot => slot.SlotNumber
+			);
+		});
+
+		modelBuilder.Entity<TicketOrderItem>(entity => {
+			// ReSharper disable once InvokeAsExtensionMethod
+			EntityTypeBuilderExtensions.HasKey(entity,
+				toi => toi.TicketOrder.Id,
+				toi => toi.TicketType.Id
 			);
 		});
 
@@ -74,6 +85,10 @@ public class RockawayDbContext(DbContextOptions<RockawayDbContext> options)
 			.HasData(SeedData.For(SampleData.Shows.AllTicketTypes));
 		modelBuilder.Entity<SupportSlot>()
 			.HasData(SeedData.For(SampleData.Shows.AllSupportSlots));
+		modelBuilder.Entity<TicketOrder>()
+			.HasData(SeedData.For(SampleData.TicketOrders.AllTicketOrders));
+		modelBuilder.Entity<TicketOrderItem>()
+			.HasData(SeedData.For(SampleData.TicketOrders.AllTicketOrderItems));
 
 		modelBuilder.Entity<IdentityUser>()
 			.HasData(SampleData.Users.Admin);

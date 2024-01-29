@@ -12,12 +12,28 @@ public class Show {
 
 	public List<TicketType> TicketTypes { get; set; } = [];
 
+	public List<TicketOrder> TicketOrders { get; set; } = [];
+
 	public int NextSupportSlotNumber
 		=> (this.SupportSlots.Count > 0 ? this.SupportSlots.Max(s => s.SlotNumber) : 0) + 1;
-
 
 	public Dictionary<string, string> RouteData => new() {
 		{ "venue", this.Venue.Slug },
 		{ "date", this.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) }
 	};
+
+	public TicketOrder CreateOrder(Dictionary<Guid, int> contents, Instant now) {
+		var order = new TicketOrder {
+			Show = this,
+			CreatedAt = now
+		};
+		foreach (var (id, quantity) in contents) {
+			var ticketType = this.TicketTypes.FirstOrDefault(tt => tt.Id == id);
+			if (ticketType == default) continue;
+			order.UpdateQuantity(ticketType, quantity);
+		}
+
+		this.TicketOrders.Add(order);
+		return order;
+	}
 }

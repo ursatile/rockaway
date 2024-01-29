@@ -1,5 +1,4 @@
 using Microsoft.Data.Sqlite;
-using Microsoft.EntityFrameworkCore;
 using Rockaway.WebApp.Data;
 using Rockaway.WebApp.Hosting;
 using Rockaway.WebApp.Services;
@@ -64,11 +63,4 @@ app.MapGet("/status", (IStatusReporter reporter) => reporter.GetStatus());
 app.MapControllerRoute("default", "{controller=Home}/{action=Index}/{id?}");
 app.Run();
 
-ILogger<T> CreateAdHocLogger<T>() {
-	var config = new ConfigurationBuilder()
-		.AddJsonFile("appsettings.json", false, true)
-		.AddEnvironmentVariables()
-		.AddJsonFile($"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json", true, true)
-		.Build();
-	return LoggerFactory.Create(lb => lb.AddConfiguration(config)).CreateLogger<T>();
-}
+ILogger<T> CreateAdHocLogger<T>() => LoggerFactory.Create(lb => lb.AddConsole()).CreateLogger<T>();

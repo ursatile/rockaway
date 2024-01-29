@@ -1,9 +1,3 @@
-// ReSharper disable StringLiteralTypo
-// ReSharper disable IdentifierTypo
-
-using Microsoft.EntityFrameworkCore;
-using Rockaway.WebApp.Data.Entities;
-
 namespace Rockaway.WebApp.Data.Sample;
 
 public static partial class SampleData {

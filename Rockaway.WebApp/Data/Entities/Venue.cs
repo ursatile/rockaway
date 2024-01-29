@@ -44,4 +44,19 @@ public class Venue {
 
 	[Url]
 	public string? WebsiteUrl { get; set; }
+
+	public List<Show> Shows { get; set; } = [];
+
+	public Show BookShow(Artist artist, LocalDate date) {
+		var show = new Show {
+			Venue = this,
+			HeadlineArtist = artist,
+			Date = date,
+		};
+		Shows.Add(show);
+		return show;
+	}
+
+	private IEnumerable<string?> AddressTokens => [Address, City, PostalCode];
+	public string FullAddress => String.Join(", ", AddressTokens.Where(s => !String.IsNullOrWhiteSpace(s)));
 }

@@ -13,6 +13,11 @@ public class RockawayDbContext(DbContextOptions<RockawayDbContext> options)
 	public DbSet<Artist> Artists { get; set; } = default!;
 	public DbSet<Venue> Venues { get; set; } = default!;
 
+	protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder) {
+		base.ConfigureConventions(configurationBuilder);
+		configurationBuilder.AddNodaTimeConverters();
+	}
+
 	protected override void OnModelCreating(ModelBuilder modelBuilder) {
 		base.OnModelCreating(modelBuilder);
 		// Override EF Core's default table naming (which pluralizes entity names)
@@ -23,16 +28,40 @@ public class RockawayDbContext(DbContextOptions<RockawayDbContext> options)
 
 		modelBuilder.Entity<Artist>(entity => {
 			entity.HasIndex(artist => artist.Slug).IsUnique();
+			entity.HasMany(a => a.HeadlineShows)
+				.WithOne(s => s.HeadlineArtist)
+				.OnDelete(DeleteBehavior.Restrict);
 		});
 
 		modelBuilder.Entity<Venue>(entity => {
 			entity.HasIndex(venue => venue.Slug).IsUnique();
+			entity.HasMany(v => v.Shows)
+				.WithOne(s => s.Venue)
+				.OnDelete(DeleteBehavior.Restrict);
+		});
+
+		modelBuilder.Entity<Show>(entity => {
+			entity.HasKey(show => show.Venue.Id, show => show.Date);
+			entity.HasMany(show => show.SupportSlots)
+				.WithOne(ss => ss.Show).OnDelete(DeleteBehavior.Cascade);
+		});
+
+		modelBuilder.Entity<SupportSlot>(entity => {
+			entity.HasKey(
+				slot => slot.Show.Venue.Id,
+				slot => slot.Show.Date,
+				slot => slot.SlotNumber
+			);
 		});
 
 		modelBuilder.Entity<Artist>()
-			.HasData(SampleData.Artists.AllArtists);
+			.HasData(SeedData.For(SampleData.Artists.AllArtists));
 		modelBuilder.Entity<Venue>()
-			.HasData(SampleData.Venues.AllVenues);
+			.HasData(SeedData.For(SampleData.Venues.AllVenues));
+		modelBuilder.Entity<Show>()
+			.HasData(SeedData.For(SampleData.Shows.AllShows));
+		modelBuilder.Entity<SupportSlot>()
+			.HasData(SeedData.For(SampleData.Shows.AllSupportSlots));
 
 		modelBuilder.Entity<IdentityUser>()
 			.HasData(SampleData.Users.Admin);

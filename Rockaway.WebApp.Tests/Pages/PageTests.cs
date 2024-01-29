@@ -1,4 +1,5 @@
 namespace Rockaway.WebApp.Tests.Pages;
+
 public class PageTests {
 	[Fact]
 	public async Task Index_Page_Returns_Success() {

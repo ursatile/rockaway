@@ -27299,4 +27299,72 @@ body > footer a:hover {
   }
 }
 
+.artist-gallery {
+  --bs-gutter-x: 1.5rem;
+  --bs-gutter-y: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(-1 * var(--bs-gutter-y));
+  margin-right: calc(-0.5 * var(--bs-gutter-x));
+  margin-left: calc(-0.5 * var(--bs-gutter-x));
+}
+.artist-gallery section {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--bs-gutter-x) * 0.5);
+  padding-left: calc(var(--bs-gutter-x) * 0.5);
+  margin-top: var(--bs-gutter-y);
+  margin-bottom: 16px;
+}
+@media (min-width: 576px) {
+  .artist-gallery section {
+    flex: 0 0 auto;
+    width: 50%;
+  }
+}
+@media (min-width: 768px) {
+  .artist-gallery section {
+    flex: 0 0 auto;
+    width: 33.33333333%;
+  }
+}
+@media (min-width: 992px) {
+  .artist-gallery section {
+    flex: 0 0 auto;
+    width: 25%;
+  }
+}
+@media (min-width: 1400px) {
+  .artist-gallery section {
+    flex: 0 0 auto;
+    width: 16.66666667%;
+  }
+}
+
+div.artist-card {
+  border-radius: 0.25rem;
+  background-position: center center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+div.artist-card.long-name h4, div.artist-card.long-name .h4 {
+  font-size: 1.2em;
+}
+div.artist-card h4, div.artist-card .h4 {
+  background-color: rgba(0, 0, 0, 0.8);
+  padding: 0.75rem;
+  margin: 0;
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+div.artist-card h4 a, div.artist-card .h4 a {
+  color: #fff;
+  text-decoration: none;
+}
+
 /*# sourceMappingURL=frontend.css.map */

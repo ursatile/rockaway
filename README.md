@@ -1,2 +1,3 @@
-# rockaway
-Rockaway sample ticket app for Modern Web Development with .NET workshop
+# Rockaway
+
+Sample code for Dylan Beattie's workshop "Modern Web Development with C# and .NET 8"

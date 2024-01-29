@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using NodaTime;
 using Rockaway.WebApp.Controllers;
 using NodaTime.Testing;
@@ -21,7 +22,7 @@ public class TicketTests {
 	}
 	[Fact]
 	public async Task Buying_Tickets_Creates_Order() {
-		
+
 		var dbName = Guid.NewGuid().ToString();
 		var db = TestDatabase.Create(dbName);
 		var clock = new FakeClock(Instant.FromUtc(2024, 1, 2, 3, 4, 5));

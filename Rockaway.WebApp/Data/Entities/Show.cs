@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Rockaway.WebApp.Data.Entities;
 
 public class Show {
@@ -21,6 +23,10 @@ public class Show {
 		{ "venue", this.Venue.Slug },
 		{ "date", this.Date.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) }
 	};
+
+	[NotMapped]
+	public IEnumerable<Artist> SupportArtists
+		=> this.SupportSlots.Select(s => s.Artist);
 
 	public TicketOrder CreateOrder(Dictionary<Guid, int> contents, Instant now) {
 		var order = new TicketOrder {

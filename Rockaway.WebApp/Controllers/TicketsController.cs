@@ -29,6 +29,6 @@ public class TicketsController(RockawayDbContext db, IClock clock) : Controller 
 		var ticketOrder = show.CreateOrder(tickets, clock.GetCurrentInstant());
 		db.TicketOrders.Add(ticketOrder);
 		await db.SaveChangesAsync();
-		return Ok("YAY! If we had an order confirmation page,. this is where you'd see it!");
+		return RedirectToAction("Confirm", "Checkout", new { id = ticketOrder.Id });
 	}
 }

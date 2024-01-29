@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Data.Sqlite;
 using Rockaway.WebApp.Data;
@@ -7,7 +9,9 @@ using Rockaway.WebApp.Services;
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages(options => options.Conventions.AuthorizeAreaFolder("admin", "/"));
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options => {
+	options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true;
+});
 builder.Services.AddSingleton<IStatusReporter>(new StatusReporter());
 builder.Services.AddSingleton<IClock>(SystemClock.Instance);
 
